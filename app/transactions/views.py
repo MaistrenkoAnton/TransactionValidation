@@ -17,8 +17,8 @@ class TransactionView(APIView):
     Validate transaction REST request
     """
     permission_classes = (AllowAny,)
-    parser_classes = (XMLParser, JSONParser)
-    renderer_classes = (XMLRenderer, JSONRenderer)
+    parser_classes = (JSONParser, XMLParser)
+    renderer_classes = (JSONRenderer, XMLRenderer)
 
     @swagger_auto_schema(request_body=openapi.Schema(type=openapi.TYPE_OBJECT))
     def post(self, request):
