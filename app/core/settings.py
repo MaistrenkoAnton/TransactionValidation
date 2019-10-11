@@ -24,7 +24,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'myv8g-7@#^_5ecrw(2v93rqz5$vs%uf%=-t6+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['ec2-18-196-188-104.eu-central-1.compute.amazonaws.com']
 
 
 # Application definition
