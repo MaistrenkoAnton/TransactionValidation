@@ -4,14 +4,12 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.exceptions import ErrorDetail
 from rest_framework.test import APITestCase
-from rest_framework_xml.parsers import XMLParser
 
 from transactions.service import TransactionService
 from transactions.tests.data_json import json_sample
 from transactions.tests.data_xml import xml_sample
 
-REST_URL = 'transactions:rest'
-XML_URL = 'transactions:xml'
+VALIDATION_URL = 'transactions:validate'
 
 
 class TestTransactionView(APITestCase):
@@ -20,13 +18,13 @@ class TestTransactionView(APITestCase):
         self.data = copy.deepcopy(json_sample)
 
     def test_rest_data_valid(self):
-        url = reverse(REST_URL)
+        url = reverse(VALIDATION_URL)
         response = self.client.post(url, data=self.data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, {'result': 'Data is valid'})
 
     def test_tax_id_is_missed(self):
-        url = reverse(REST_URL)
+        url = reverse(VALIDATION_URL)
         self.data['taxes'] = [{
           "id": None,
           "name": "string",
@@ -41,7 +39,7 @@ class TestTransactionView(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_tax_name_is_missed(self):
-        url = reverse(REST_URL)
+        url = reverse(VALIDATION_URL)
         self.data['taxes'] = [{
             "id": 1,
             "name": None,
@@ -59,7 +57,7 @@ class TestTransactionView(APITestCase):
         )
 
     def test_is_custom_amount_wrong_format(self):
-        url = reverse(REST_URL)
+        url = reverse(VALIDATION_URL)
         self.data['taxes'] = [{
             "id": 1,
             "name": 'Tax',
@@ -78,7 +76,7 @@ class TestTransactionView(APITestCase):
         )
 
     def test_tax_currency_is_wrong(self):
-        url = reverse(REST_URL)
+        url = reverse(VALIDATION_URL)
         self.data['taxes'] = [{
             "id": 1,
             "name": 'Tax',
@@ -103,7 +101,7 @@ class TestXMLTransactionView(APITestCase):
         self.data = xml_sample
 
     def test_xml_data_valid(self):
-        url = reverse(XML_URL)
+        url = reverse(VALIDATION_URL)
         response = self.client.post(url, data=self.data, content_type='application/xml')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, {'result': 'Data is valid'})

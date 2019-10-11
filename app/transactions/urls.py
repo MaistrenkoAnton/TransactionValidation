@@ -1,9 +1,8 @@
 from django.urls import path
 
-from transactions.views import TransactionView, XmlTransactionView
+from transactions.views import TransactionView
 
 
 urlpatterns = [
-    path('json', TransactionView.as_view(), name='rest'),
-    path('xml', XmlTransactionView.as_view(), name='xml'),
+    path('', TransactionView.as_view(), name='validate'),
 ]
